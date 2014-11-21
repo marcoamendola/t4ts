@@ -9,7 +9,9 @@
   -->
   <PropertyGroup>
     <Configuration>Release</Configuration>
+    <Platform>AnyCPU</Platform>
     <OutputDir>..\build</OutputDir>
+    <OutputPath>..\build</OutputPath>
   </PropertyGroup>
 
   <Target Name="BuildPrerequisites">
@@ -20,7 +22,7 @@
     # @AttributeFile variable.
     # ========================================================================
     -->
-    <MSBuild Projects ="..\T4TS.Attributes\T4TS.Attributes.csproj" ContinueOnError ="false" Properties="Configuration=$(Configuration)">
+    <MSBuild Projects ="..\T4TS.Attributes\T4TS.Attributes.csproj" ContinueOnError ="false" Properties="Configuration=$(Configuration);Platform=$(Platform)">
         <Output ItemName="AttributeFile" TaskParameter="TargetOutputs"/>
     </MSBuild>
 
@@ -30,7 +32,7 @@
     # available in the .dll in the bin\$(Configuration) folder.
     # ========================================================================
     -->
-    <MSBuild Projects ="T4TS.Build.Builder.csproj" ContinueOnError ="false" Properties="Configuration=$(Configuration)" />
+    <MSBuild Projects ="T4TS.Build.Builder.csproj" ContinueOnError ="false" Properties="Configuration=$(Configuration);Platform=$(Platform)" />
   </Target>
 
   <!--
