@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Outputs\ObservableMemberOutputAppender.cs" />
+    <Compile Include="Outputs\ObservableClassOutputAppender.cs" />
     <Compile Include="Outputs\OutputAppender.cs" />
     <Compile Include="Outputs\InterfaceOutputAppender.cs" />
     <Compile Include="Outputs\MemberOutputAppender.cs" />

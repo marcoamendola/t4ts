@@ -11,7 +11,23 @@ namespace T4TS.Tests.Models
     {
         public int Id { get; set; }
 
-        [TypeScriptMember(Optional = true)]
+        [TypeScriptMember(Optional = true, CamelCase=true)]
         public string Optional { get; set; }
+    }
+
+
+    [TypeScriptInterface]
+    public class ParentModel
+    {
+        public int Id { get; set; }
+        public ChildModel Child { get; set; }
+        public ChildModel[] Children { get; set; }
+    }
+
+    [TypeScriptInterface]
+    public class ChildModel
+    {
+        public int Id { get; set; }
+        public DateTime Date { get; set; }
     }
 }

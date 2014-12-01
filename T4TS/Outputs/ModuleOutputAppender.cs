@@ -18,9 +18,16 @@ namespace T4TS
             BeginModule(module);
 
             var interfaceAppender = new InterfaceOutputAppender(Output, BaseIndentation + 4, Settings, module.IsGlobal);
+            var observableClassAppender = new ObservableClassOutputAppender(Output, BaseIndentation + 4, Settings, module.IsGlobal);
             foreach (var tsInterface in module.Interfaces)
+            {
                 interfaceAppender.AppendOutput(tsInterface);
-
+                if (Settings.GenerateObservables)
+                {
+                    observableClassAppender.AppendOutput(tsInterface);
+                }
+            }
+            
             EndModule(module);
         }
 

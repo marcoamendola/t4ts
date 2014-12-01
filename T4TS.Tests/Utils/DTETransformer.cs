@@ -126,7 +126,7 @@ namespace T4TS.Tests.Utils
                 moqAttribute.SetupGet(x => x.FullName).Returns(attributeType.FullName);
 
                 var interfaceOptions = new List<CodeElement>();
-
+                
                 foreach (var prop in fromAttribute.GetType().GetProperties())
                 {
                     var val = prop.GetValue(fromAttribute);
@@ -184,6 +184,9 @@ namespace T4TS.Tests.Utils
         {
             var getterType = new Mock<CodeTypeRef>();
             getterType.SetupGet(x => x.TypeKind).Returns(GetTypeRef(fromType));
+            getterType.SetupGet(x => x.AsFullName).Returns(fromType.FullName);
+            if (fromType.IsArray)
+                getterType.SetupGet(x => x.ElementType).Returns(GetCodeTypeRef(fromType.GetElementType()));
 
             return getterType.Object;
         }
@@ -204,9 +207,13 @@ namespace T4TS.Tests.Utils
 
         private static vsCMTypeRef GetTypeRef(Type fromType)
         {
+
+            if (fromType.IsArray) return vsCMTypeRef.vsCMTypeRefArray;
+
             vsCMTypeRef typeRef;
             if (!TypeMap.TryGetValue(fromType.FullName, out typeRef))
-                throw new ApplicationException("No type map found for " + fromType.FullName);
+                //throw new ApplicationException("No type map found for " + fromType.FullName);
+                return vsCMTypeRef.vsCMTypeRefObject;
 
             return typeRef;
         }
