@@ -72,22 +72,37 @@ Project GetProjectContainingT4File(DTE dte) {
             AppendIndendation();
 
             bool isOptional = member.Optional || (member.Type is NullableType);
-            string type = member.Type.ToString();
-
-            if (member.Type is BoolType)
+            
+            if (member.Type is ArrayType)
             {
-                if (Settings.CompatibilityVersion != null && Settings.CompatibilityVersion < new Version(0, 9, 0))
-                    type = "bool";
-                else
-                    type = "boolean";
+                var array = (ArrayType)member.Type;
+                Output.AppendFormat("{0} = ko.observableArray<{1}>([])",
+                    member.Name,
+                    FixType(array.ElementType)
+                );
             }
-
-            Output.AppendFormat("{0} = ko.observable<{1}>()",
-                member.Name,
-                type
-            );
+            else
+            {
+                Output.AppendFormat("{0} = ko.observable<{1}>()",
+                    member.Name,
+                    FixType(member.Type)
+                );
+            }
             
             Output.AppendLine(";");
+        }
+
+        string FixType(TypescriptType type)
+        {
+            if (type is BoolType)
+            {
+                if (Settings.CompatibilityVersion != null && Settings.CompatibilityVersion < new Version(0, 9, 0))
+                    return "bool";
+                else
+                    return "boolean";
+            }
+
+            return type.ToString();
         }
     }
 

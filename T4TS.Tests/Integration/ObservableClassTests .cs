@@ -27,11 +27,12 @@ namespace T4TS.Tests.Integration
             var solution = DTETransformer.BuildDteSolution(typeof(T1), typeof(T2));
             return Build(solution);
         }
+        bool generateObservables = true;
         string Build(EnvDTE.Solution solution)
         {
             var settings = new Settings
             {
-                GenerateObservables = true,
+                GenerateObservables = this.generateObservables,
                 DefaultCamelCaseMemberNames = true
             };
             var codeTraverser = new CodeTraverser(solution, settings);
@@ -43,6 +44,12 @@ namespace T4TS.Tests.Integration
         [TestMethod]
         public void CanBuildSimpleObservable()
         {
+            Approvals.Verify(Build<LocalModel>());
+        }
+        [TestMethod]
+        public void CanSkipObservablesWhenNotActivated()
+        {
+            this.generateObservables = false;
             Approvals.Verify(Build<LocalModel>());
         }
 
